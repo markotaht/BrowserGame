@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "C9CegQsW0wnaWQowyNpVlobL56LaLk9uxHyR+IoztsI=",
+  "Source": "BrowserGameServer",
+  "BasePath": "_content/BrowserGameServer",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
