@@ -1,7 +1,8 @@
 import ContextBridge from "./ContextBridge.tsx";
-import {PlayerContext} from "../context/PlayerContext.tsx";
 import {Stage} from "@pixi/react";
-import {ReactNode} from "react";
+import React, {ReactNode} from "react";
+import {MapContext} from "../context/MapContext.tsx";
+import {GameStateContext} from "../context/GameStateProvider.tsx";
 
 interface ContextStageProps {
     [x: string]: any;
@@ -12,12 +13,19 @@ interface ContextStageProps {
 const ContextStage = ({children, ...props}: ContextStageProps) => {
     return (
         <ContextBridge
-            Context={PlayerContext}
-            render={(children) => <Stage {...props}>{children}</Stage>}>
+            Context={MapContext}
+            render={(children: any) =>
+                <ContextBridge
+                    Context={GameStateContext}
+                    render={(children) => <Stage {...props}>{children}</Stage>}
+                >
+                    {children}
+                </ContextBridge>
+            }>
             {children}
         </ContextBridge>
-    );
+    )
 }
 
 
-export default ContextStage;
+export default React.memo(ContextStage);

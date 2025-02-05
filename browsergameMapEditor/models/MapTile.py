@@ -3,9 +3,10 @@ from models.JSONAble import JSONAble
 
 
 class MapTile(JSONAble):
-    def __init__(self, x: int, y: int, region: int, color: Color):
+    def __init__(self, x: int, y: int, region: int, color: Color, type: str):
         super().__init__()
         self.x = x
         self.y = y
         self.region = region
         self.color = color
+        self.type = type

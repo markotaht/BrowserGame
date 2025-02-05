@@ -1,17 +1,25 @@
+import {scan} from "react-scan";
 import {createRoot} from 'react-dom/client'
 import './index.css'
 import App from './App.tsx'
-import GameContextProvider from "./context/GameContext.tsx";
-import {PlayerContextProvider} from "./context/PlayerContext.tsx";
-import MapContextProvider from "./context/MapContext.tsx";
+import GameStateProvider from "./context/GameStateProvider.tsx";
+import SocketContextProvider from "./context/SocketContext.tsx";
+import GameLogicProvider from "./context/GameLogicProvider.tsx";
+
+if (typeof window !== 'undefined') {
+    scan({
+        enabled: true,
+        log: false, // logs render info to console (default: false)
+    });
+}
 
 createRoot(document.getElementById('root')!).render(
-    <GameContextProvider>
-        <MapContextProvider>
-            <PlayerContextProvider>
+    <SocketContextProvider>
+        <GameStateProvider>
+            <GameLogicProvider>
                 <App/>
-            </PlayerContextProvider>
-        </MapContextProvider>
-    </GameContextProvider>
+            </GameLogicProvider>
+        </GameStateProvider>
+    </SocketContextProvider>
     ,
 )

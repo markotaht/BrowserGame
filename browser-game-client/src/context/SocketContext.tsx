@@ -1,4 +1,6 @@
-import {createContext, PropsWithChildren, useCallback, useEffect, useRef, useState} from "react";
+import {createContext, PropsWithChildren, useCallback, useEffect, useMemo, useRef, useState} from "react";
+import {TileType} from "../component/tileType.ts";
+import {TileItemType} from "../component/tileInfo/TyleItemType.ts";
 
 export interface GameRequest {
     Controller: string;
@@ -27,21 +29,29 @@ export interface GameResponse {
     Error: GameError;
 }
 
+export interface IMapTileContent {
+    type: TileItemType;
+    title: string;
+    subtitle: string;
+    id: string;
+}
+
 export interface IMapTile {
     x: number;
     y: number;
     region: number;
     color: { R: number, G: number, B: number };
-    contents: string[];
+    type: TileType;
+    contents: IMapTileContent[];
 }
 
-export interface GameContextProps {
+export interface SocketContextProps {
     send: (request: GameRequest) => void;
     addListener: (event: string, callback: EventCallback) => void;
     removeListener: (event: string, callback: EventCallback) => void;
 }
 
-const defaultProps: GameContextProps = {
+const defaultProps: SocketContextProps = {
     send: () => {
     },
     addListener: () => {
@@ -50,12 +60,12 @@ const defaultProps: GameContextProps = {
     }
 }
 
-export const GameContext = createContext<GameContextProps>(defaultProps);
+export const SocketContext = createContext<SocketContextProps>(defaultProps);
 
 //export type EventCallback = (e: GameResponse) => void;
 export type EventCallback = (e: any) => void;
 
-const GameContextProvider = (props: PropsWithChildren) => {
+const SocketContextProvider = (props: PropsWithChildren) => {
     const [socket, setSocket] = useState<WebSocket>();
     const eventListeners = useRef(new Map<string, EventCallback[]>());
 
@@ -114,13 +124,15 @@ const GameContextProvider = (props: PropsWithChildren) => {
         }
     }, []);
 
-    const value = {
-        send,
-        addListener,
-        removeListener
-    }
+    const value = useMemo(() => {
+        return {
+            send,
+            addListener,
+            removeListener
+        };
+    }, [addListener, removeListener, send]);
 
-    return <GameContext.Provider value={value}>{props.children}</GameContext.Provider>;
+    return <SocketContext.Provider value={value}>{props.children}</SocketContext.Provider>;
 }
 
-export default GameContextProvider;
+export default SocketContextProvider;

@@ -27,11 +27,11 @@ class MainWindow:
         self.sideMenu.generateMap.config(command=self.__bind(self, self.initializeMap))
 
         tiles = [
-            MapTileInfo(Color(0, 255, 0)),
-            MapTileInfo(Color(0, 0, 255)),
-            MapTileInfo(Color(255, 222, 33)),
-            MapTileInfo(Color(137, 137, 137)),
-            MapTileInfo(Color(255, 255, 255))
+            MapTileInfo(Color(0, 255, 0), 'GRASS'),
+            MapTileInfo(Color(0, 0, 255), 'WATER'),
+            MapTileInfo(Color(255, 222, 33), 'SAND'),
+            MapTileInfo(Color(137, 137, 137), 'ROCK'),
+            MapTileInfo(Color(255, 255, 255), 'SNOW')
         ]
 
         self.tileSelector = TileSelector(tiles)
@@ -54,14 +54,15 @@ class MainWindow:
         mapHeight = self.sideMenu.getMapHeight()
         region = self.sideMenu.getRegion()
 
-        self.tiles = [self.createTile(x, y, region, Color(255, 255, 255)) for x in range(mapWidth) for y in range(mapHeight)]
+        self.tiles = [self.createTile(x, y, region, Color(255, 255, 255), 'SNOW') for x in range(mapWidth) for y in range(mapHeight)]
 
     def changeColor(self, label, tile: MapTile):
         label.config(bg=self.tileSelector.selectedTile.color.asHex())
         tile.color = self.tileSelector.selectedTile.color
+        tile.type = self.tileSelector.selectedTile.type
 
-    def createTile(self, x, y,region, color: Color):
-        tile = MapTile(x,y,region,color)
+    def createTile(self, x, y,region, color: Color, tileType: str):
+        tile = MapTile(x,y,region,color, tileType)
         label = Label(self.root, background=color.asHex(), width=TILE_WIDTH, height=TILE_HEIGHT)
         label.grid(row=y, column=x)
         label.bind("<Button-1>", lambda e: self.changeColor(label, tile))

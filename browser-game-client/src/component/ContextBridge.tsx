@@ -1,4 +1,4 @@
-import {Context, ReactNode} from "react";
+import React, {Context, ReactNode} from "react";
 
 interface ContextBridgeProps {
     children: ReactNode[];
@@ -16,4 +16,4 @@ const ContextBridge = ({children, Context, render}: ContextBridgeProps) => {
     );
 }
 
-export default ContextBridge;
+export default React.memo(ContextBridge);

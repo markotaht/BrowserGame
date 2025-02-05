@@ -1,0 +1,33 @@
+.tile-item {
+    display: flex;
+    flex-direction: row;
+    padding: 5px;
+
+    &:hover {
+        background-color: lightgray;
+    }
+
+    & > .tile-item-icon {
+        display: flex;
+        align-items: center;
+        width: 40px;
+        height: 40px;
+    }
+
+    & > .tile-item-description {
+        display: flex;
+        flex-direction: column;
+        justify-content: start;
+        padding-left: 5px;
+
+        & > .tile-item-title {
+            text-align: start;
+            justify-content: start;
+        }
+
+        & > .tile-item-subtitle {
+            text-align: start;
+            justify-content: start;
+        }
+    }
+}

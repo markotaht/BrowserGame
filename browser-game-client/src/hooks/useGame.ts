@@ -1,8 +1,8 @@
 import {useContext} from "react";
-import {GameContext} from "../context/GameContext.tsx";
+import {SocketContext} from "../context/SocketContext.tsx";
 
 const useGame = () => {
-    return useContext(GameContext);
+    return useContext(SocketContext);
 }
 
 export default useGame;

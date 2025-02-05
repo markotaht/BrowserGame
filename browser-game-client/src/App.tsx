@@ -1,13 +1,15 @@
 import './App.css'
 import Chatbox from "./chatbox/Chatbox.tsx";
 import GameMap from "./map/GameMap.tsx";
-import TileInfo from "./component/tileInfo/TileInfo.tsx";
+import TileInfo from "./component/tileInfo/TileContents.tsx";
+import PlayerInventory from "./component/PlayerInventory.tsx";
 
 const App = () => {
     return (
         <div className={'grid-container'}>
             <GameMap/>
             <TileInfo/>
+            <PlayerInventory/>
             <Chatbox/>
         </div>
     );

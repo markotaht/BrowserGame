@@ -1,5 +1,5 @@
 import {PixiComponent} from "@pixi/react";
-import {IMapTile} from "../context/GameContext.tsx";
+import {IMapTile} from "../context/SocketContext.tsx";
 import {Graphics} from 'pixi.js';
 import {TILE_SIZE} from "../component/constants.ts";
 
