@@ -1,0 +1,23 @@
+.tab-button {
+    display: block;
+    width: 40px;
+    height: 40px;
+    text-align: center;
+    line-height: 40px;
+    vertical-align: middle;
+    background-color: white;
+    color: black;
+
+    border-width: 1px 1px 0px 1px;
+    border-style: solid;
+    border-color: black;
+    border-radius: 10px 10px 0 0;
+
+    position: relative;
+}
+
+.active {
+    box-shadow: 10px 10px 10px #000;
+    clip-path: inset(0px -40% 0px 0px);
+    z-index: 1;
+}

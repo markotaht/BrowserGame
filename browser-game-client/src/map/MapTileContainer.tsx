@@ -3,6 +3,7 @@ import {useMemo} from "react";
 import {TILE_SIZE} from "../component/constants.ts";
 import MapTile from "./MapTile.tsx";
 import useGameState from "../hooks/useGameState.ts";
+import React from "react";
 
 const MapTileContainer = () => {
     const {playerState, mapState} = useGameState();
@@ -22,4 +23,4 @@ const MapTileContainer = () => {
     );
 }
 
-export default MapTileContainer;
+export default React.memo(MapTileContainer);

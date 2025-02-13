@@ -1,8 +1,7 @@
-import ContextBridge from "./ContextBridge.tsx";
 import {Stage} from "@pixi/react";
 import React, {ReactNode} from "react";
-import {MapContext} from "../context/MapContext.tsx";
 import {GameStateContext} from "../context/GameStateProvider.tsx";
+import {BridgeProvider, useBridgeValue} from "use-context-selector";
 
 interface ContextStageProps {
     [x: string]: any;
@@ -11,19 +10,13 @@ interface ContextStageProps {
 }
 
 const ContextStage = ({children, ...props}: ContextStageProps) => {
+    const gameStateValue = useBridgeValue(GameStateContext);
     return (
-        <ContextBridge
-            Context={MapContext}
-            render={(children: any) =>
-                <ContextBridge
-                    Context={GameStateContext}
-                    render={(children) => <Stage {...props}>{children}</Stage>}
-                >
-                    {children}
-                </ContextBridge>
-            }>
-            {children}
-        </ContextBridge>
+        <Stage {...props}>
+            <BridgeProvider context={GameStateContext} value={gameStateValue}>
+                {children}
+            </BridgeProvider>
+        </Stage>
     )
 }
 

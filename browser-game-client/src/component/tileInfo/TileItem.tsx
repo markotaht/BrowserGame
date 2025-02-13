@@ -1,11 +1,11 @@
-import React, {ReactNode, useCallback} from 'react';
+import React, {ComponentType, useCallback} from 'react';
 import './TileItem.css';
-import {IMapTileContent} from "../../context/SocketContext.tsx";
+import {IBaseNode} from "../../data/IBaseNode.ts";
 
 interface TileItemProps {
-    item: IMapTileContent;
-    TileIcon: ReactNode;
-    onContextMenu: (event: React.MouseEvent, item: IMapTileContent) => void;
+    item: IBaseNode;
+    TileIcon: ComponentType<any>;
+    onContextMenu: (event: React.MouseEvent, item: IBaseNode) => void;
 }
 
 const TileItem = ({item, TileIcon, onContextMenu}: TileItemProps) => {
@@ -17,8 +17,8 @@ const TileItem = ({item, TileIcon, onContextMenu}: TileItemProps) => {
         <div className={'tile-item'} onContextMenu={onContextMenuCallback}>
             <TileIcon className={'tile-item-icon'}/>
             <div className={'tile-item-description'}>
-                <div className={'tile-item-title'}>{item.title}</div>
-                <div className={'tile-item-subtitle'}>{item.subtitle}</div>
+                <div className={'tile-item-title'}>{item.name}</div>
+                <div className={'tile-item-subtitle'}>{item.description}</div>
             </div>
         </div>
     </>;

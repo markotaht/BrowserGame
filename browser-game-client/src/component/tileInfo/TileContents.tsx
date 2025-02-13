@@ -4,24 +4,22 @@ import Color from '../../assets/colorpallet.svg'
 import Coordinates from '../../assets/coords.svg'
 import useContextMenu from "../../hooks/useContextMenu.ts";
 import ContextMenu from "../ContextMenu/ContextMenu.tsx";
-import {IMapTileContent} from "../../context/SocketContext.tsx";
 import {ITileItem} from "./ITileItem.ts";
 import TileItems from "./TileItems.tsx";
 import {TileItemType} from "./TyleItemType.ts";
 import useGameLogic from "../../hooks/useGameLogic.ts";
-import useGameState from "../../hooks/useGameState.ts";
 import TreeContextMenu from "../ContextMenu/TreeContextMenu.tsx";
+import {IBaseNode} from "../../data/IBaseNode.ts";
+import usePlayerLocation from "../../hooks/usePlayerLocation.ts";
 
 const TileContents = () => {
     const {clicked, onClick, points} = useContextMenu();
-    const {playerState} = useGameState()
     const {getTileInfo} = useGameLogic();
-    const {location} = playerState;
-    const {x,y} = location;
-    const [selectedItem, setSelectedItem] = useState<IMapTileContent>();
+    const {x,y} = usePlayerLocation();
+    const [selectedItem, setSelectedItem] = useState<IBaseNode |undefined>();
     const [items, setItems] = useState<ITileItem[]>([]);
 
-    const onContextMenu = useCallback((e: React.MouseEvent, item: IMapTileContent) => {
+    const onContextMenu = useCallback((e: React.MouseEvent, item: IBaseNode) => {
         onClick(e);
         setSelectedItem(item);
     }, [onClick]);
@@ -34,47 +32,47 @@ const TileContents = () => {
 
     useEffect(() => {
         const tile = getTileInfo(x,y);
-        console.log(tile);
         if(tile !== undefined) {
             const items: ITileItem[] = [
                 {
                     icon: Info,
                     item: {
-                        title: 'Type',
-                        subtitle: tile.type,
+                        name: 'Type',
+                        description: tile.type,
                         type: TileItemType.INFO,
-                        id:"type"
+                        id: "type",
+                        image: "",
+                        drops: []
                     },
                 },
                 {
                     icon: Color,
                     item: {
-                        title: 'Color',
-                        subtitle: `r: ${tile.color.R},g: ${tile.color.G},b:${tile.color.B}`,
+                        name: 'Color',
+                        description: `r: ${tile.color.R},g: ${tile.color.G},b:${tile.color.B}`,
                         type: TileItemType.COLOR,
-                        id: "color"
+                        id: "color",
+                        image: "",
+                        drops: []
                     },
                 },
                 {
                     icon: Coordinates,
                     item: {
-                        title: 'Coordinates',
-                        subtitle: `x: ${x},y: ${y}`,
+                        name: 'Coordinates',
+                        description: `x: ${x},y: ${y}`,
                         type: TileItemType.COORD,
-                        id:"coord"
+                        id: "coord",
+                        image: "",
+                        drops: []
                     },
                 }
             ];
             if(tile.contents){
-                setItems([...items, ...tile.contents.map(content => {
+                setItems([...items, ...tile.contents.map((content: IBaseNode) => {
                     return {
                         icon: Info,
-                        item: {
-                            title: content.title,
-                            subtitle: content.subtitle,
-                            type: content.type,
-                            id: "wood"
-                        }
+                        item: content
                     }
                 })])
             } else {
@@ -83,14 +81,14 @@ const TileContents = () => {
         } else {
             setItems([]);
         }
-    }, [getTileInfo, location]);
+    }, [getTileInfo, x, y]);
     
     return (
         <div style={{background: "white", color: "black", height: "100%"}}>
             <TileItems items={items} onContextMenu={onContextMenu} />
             {clicked && (
                 <ContextMenu x={points.x} y={points.y}>
-                    <TreeContextMenu item={selectedItem}/>
+                    <TreeContextMenu item={selectedItem!}/>
                 </ContextMenu>
             )}
         </div>

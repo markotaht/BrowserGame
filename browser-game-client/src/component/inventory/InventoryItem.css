@@ -1,0 +1,8 @@
+.inventory-item {
+    color: #1a1a1a;
+    text-align: start;
+
+    &:nth-child(even) {
+        background-color: lightgray;
+    }
+}

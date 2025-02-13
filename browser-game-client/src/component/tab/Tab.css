@@ -1,0 +1,20 @@
+.tab-container {
+    background-color: #535bf2;
+    display: flex;
+    flex-direction: column;
+}
+
+.tab-content{
+    height: 100%;
+    background-color: white;
+    box-shadow: 10px 10px 10px #000;
+    border-width: 0px 0px 0px 1px;
+    border-style: solid;
+    border-color: black;
+    border-radius: 0px 0px 10px 10px;
+}
+
+.tab-buttons {
+    display: flex;
+    flex-direction: row;
+}

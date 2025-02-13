@@ -1,8 +1,11 @@
-import {createContext, useCallback, useEffect} from "react";
+import {useCallback, useEffect} from "react";
+import {createContext} from 'use-context-selector';
 import useGameState from "../hooks/useGameState.ts";
 import {mapInfo} from "../component/constants.ts";
-import {IMapTile, IMapTileContent} from "./SocketContext.tsx";
-import {canWalkOnTile} from "../component/tileType.ts";
+import {IMapTile} from "./SocketContext.tsx";
+import {canWalkOnTile, TileType} from "../component/tileType.ts";
+import {PlayerLocation} from "./GameStateProvider.tsx";
+import {IItemNode} from "../data/IBaseNode.ts";
 
 function mapTileComparator(a: IMapTile, b: IMapTile) {
     const dif = a.y - b.y;
@@ -12,7 +15,13 @@ function mapTileComparator(a: IMapTile, b: IMapTile) {
     return dif;
 }
 
-export const GameLogicContext = createContext();
+interface GameLogicContextProps {
+    getTileInfo: (x: number, y: number) => IMapTile;
+    getPlayerLocation: () => PlayerLocation;
+    pickUpItem: (item: IItemNode) => void;
+}
+
+export const GameLogicContext = createContext<GameLogicContextProps | undefined>(undefined);
 
 const GameLogicProvider = (props: any) => {
     const {playerState, playerStateDispatcher, mapState, mapStateDispatcher} = useGameState();
@@ -42,7 +51,7 @@ const GameLogicProvider = (props: any) => {
         const {location: playerLocation} = playerState;
         const newLocation = {x: playerLocation.x + location.x, y: playerLocation.y + location.y};
         const tileInfo = getTileInfo(newLocation.x, newLocation.y);
-        if(canWalkOnTile(tileInfo.type)){
+        if (canWalkOnTile(tileInfo.type as TileType)) {
             playerStateDispatcher({
                 type: "SET_LOCATION", payload: newLocation
             });
@@ -72,20 +81,20 @@ const GameLogicProvider = (props: any) => {
         }
     }, [handleKeyUp]);
 
-    const getPlayerLocation = () => {
+    const getPlayerLocation = useCallback(() => {
         return playerState.location;
-    }
+    },[playerState])
 
-    const pickUpItem = (item: IMapTileContent) => {
-        playerStateDispatcher({type:"PICKUP_ITEM", payload: item});
-    }
+    const pickUpItem = useCallback((item: IItemNode) => {
+        playerStateDispatcher({type: "PICKUP_ITEM", payload: item});
+    }, [playerStateDispatcher])
 
     const values = {
         getTileInfo,
         getPlayerLocation,
         pickUpItem,
     }
-    
+
     return <GameLogicContext.Provider value={values}>{props.children}</GameLogicContext.Provider>;
 }
 

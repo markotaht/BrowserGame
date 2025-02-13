@@ -1,12 +1,18 @@
 import useGameLogic from "../../hooks/useGameLogic.ts";
+import {items} from "../../data/Items.ts";
+import {IBaseNode} from "../../data/IBaseNode.ts";
 
 interface TreeContextMenuProps {
-    item: IMapTileContent;
+    item: IBaseNode;
 }
 const TreeContextMenu = ({item}: TreeContextMenuProps) => {
     const {pickUpItem} = useGameLogic();
+    const onClick = () => {
+        const index = items.findIndex((value) => value.id === item.drops[0]);
+        pickUpItem(items[index]);
+    }
     return (<ul>
-        <li onClick={() => pickUpItem(item)}>Chop</li>
+        <li onClick={onClick}>Chop</li>
     </ul>);
 }
 

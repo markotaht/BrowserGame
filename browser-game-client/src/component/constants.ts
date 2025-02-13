@@ -38,10 +38,12 @@ export const mapInfo = {
             "y": 2,
             "contents": [
                 {
-                    "title": "Tree",
-                    "subtitle": "Spruce",
-                    "type": "TREE",
-                    "id":"0:2:1"
+                    "name": "Tree",
+                    "description": "Birch",
+                    "resourceType": "TREE",
+                    "id": "1",
+                    "image": "",
+                    "drops": ['1']
                 }
             ]
         },

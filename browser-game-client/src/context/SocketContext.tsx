@@ -1,6 +1,6 @@
 import {createContext, PropsWithChildren, useCallback, useEffect, useMemo, useRef, useState} from "react";
-import {TileType} from "../component/tileType.ts";
 import {TileItemType} from "../component/tileInfo/TyleItemType.ts";
+import {IBaseNode} from "../data/IBaseNode.ts";
 
 export interface GameRequest {
     Controller: string;
@@ -41,8 +41,8 @@ export interface IMapTile {
     y: number;
     region: number;
     color: { R: number, G: number, B: number };
-    type: TileType;
-    contents: IMapTileContent[];
+    type: string;
+    contents?: IBaseNode[];
 }
 
 export interface SocketContextProps {

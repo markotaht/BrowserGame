@@ -2,19 +2,20 @@ import './App.css'
 import Chatbox from "./chatbox/Chatbox.tsx";
 import GameMap from "./map/GameMap.tsx";
 import TileInfo from "./component/tileInfo/TileContents.tsx";
-import PlayerInventory from "./component/PlayerInventory.tsx";
+import React from 'react';
+import Tab from "./component/tab/Tab.tsx";
 
 const App = () => {
     return (
         <div className={'grid-container'}>
+            <Tab/>
             <GameMap/>
             <TileInfo/>
-            <PlayerInventory/>
             <Chatbox/>
         </div>
     );
 };
-export default App
+export default React.memo(App)
 
 
 /*

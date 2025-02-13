@@ -1,4 +1,5 @@
-import {createContext, PropsWithChildren, useCallback, useEffect, useMemo, useState} from "react";
+import { PropsWithChildren, useCallback, useEffect, useMemo, useState} from "react";
+import {createContext} from 'use-context-selector';
 import {IMapTile} from "./SocketContext.tsx";
 import {mapInfo} from "../component/constants.ts";
 

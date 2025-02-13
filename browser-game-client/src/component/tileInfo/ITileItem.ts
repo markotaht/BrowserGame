@@ -1,7 +1,7 @@
-import {ReactNode} from "react";
-import {IMapTileContent} from "../../context/SocketContext.tsx";
+import {ComponentType} from "react";
+import {IBaseNode} from "../../data/IBaseNode.ts";
 
 export interface ITileItem {
-    icon: ReactNode;
-    item: IMapTileContent;
+    icon: ComponentType<any>;
+    item: IBaseNode;
 }

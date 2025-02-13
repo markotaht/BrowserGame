@@ -1,14 +1,17 @@
-import {createContext, useReducer,} from "react";
+import {useReducer} from "react";
+import {createContext} from 'use-context-selector';
 import {IMapTile} from "./SocketContext.tsx";
+import {IInventorySocket} from "../data/IInventorySocket.ts";
+import {IItemNode} from "../data/IBaseNode.ts";
 
-interface PlayerLocation {
+export interface PlayerLocation {
     x: number;
     y: number;
 }
 
 interface PlayerState {
     location: PlayerLocation;
-    inventory: any[];
+    inventory: IInventorySocket[];
 }
 
 interface PlayerAction {
@@ -40,8 +43,17 @@ const playerStateReducer = ((state: PlayerState, action: PlayerAction) => {
         case "SET_LOCATION": {
             return {...state, location: action.payload};
         }
-        case "PICKUP_ITEM":{
-            return {...state, inventory: [...state.inventory, action.payload]};
+        case "PICKUP_ITEM": {
+            const item = action.payload as IItemNode;
+            if (item.stackable) {
+                const index = state.inventory.findIndex((value: IInventorySocket) => value.itemNode.id === item.id);
+                if (index > -1) {
+                    const elem = state.inventory[index];
+                    state.inventory[index] = {...elem, count: elem.count + 1};
+                    return {...state, inventory: [...state.inventory]};
+                }
+            }
+            return {...state, inventory: [...state.inventory, {itemNode: action.payload, count: 1}]};
         }
         default:
             return state;
@@ -57,19 +69,14 @@ const mapStateReducer = ((state: MapState, action: PlayerAction): MapState => {
     }
 })
 
-interface GameContextProps {
+interface GameStateContextProps {
     playerState: PlayerState;
-    playerStateDispatcher: () => void;
+    playerStateDispatcher: React.Dispatch<PlayerAction>;
     mapState: MapState;
-    mapStateDispatcher: () => void;
+    mapStateDispatcher: React.Dispatch<PlayerAction>;
 }
 
-const initialContextState = {
-    playerState: initialPlayerState,
-    mapState: initialMapState,
-}
-
-export const GameStateContext = createContext<GameContextProps>(initialContextState);
+export const GameStateContext = createContext<GameStateContextProps | undefined>(undefined);
 
 const GameStateProvider = (props: any) => {
     const [playerState, playerStateDispatch] = useReducer(playerStateReducer, initialPlayerState);

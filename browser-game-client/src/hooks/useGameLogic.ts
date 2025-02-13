@@ -1,4 +1,4 @@
-import {useContext} from "react";
+import { useContext } from 'use-context-selector';
 import {GameLogicContext} from "../context/GameLogicProvider.tsx";
 
 const useGameLogic = () => {
